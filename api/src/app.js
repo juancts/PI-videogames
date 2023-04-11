@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
+const morgan = require('morgan'); //middleware qu recibe la request y continua su camino.
 const routes = require('./routes/index.js');
 
 require('./db.js');
