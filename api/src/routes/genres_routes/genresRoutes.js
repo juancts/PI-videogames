@@ -1,6 +1,6 @@
 const { Router } = require("express");
 //const axios = require("axios");
-const {GET_searchAllGenres} =require ("./genres_controllers")
+const {GET_searchAllGenres} =require ("./genres_handlers")
 
 
 const router = Router();

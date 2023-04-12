@@ -1,6 +1,6 @@
 const { Router } = require("express");
 //const axios = require("axios");
-const {GET_AllVideogames, GET_VideogamesById, POST_Videogames} =require ("./videogames_controllers");
+const {GET_AllVideogames, GET_VideogamesById, POST_Videogames} =require ("./videogames_handlers");
 
 
 

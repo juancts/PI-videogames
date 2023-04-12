@@ -29,9 +29,8 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
-// Para relacionarlos hacemos un destructuring
+// Para relacionarlos hacemos un destructuring del objeto sequelize.models
 const { Videogames, Genres } = sequelize.models;
-
 
 // Aca vendrian las relaciones
 Genres.belongsToMany(Videogames, {through: "videogenres" });
