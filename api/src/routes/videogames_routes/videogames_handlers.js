@@ -18,9 +18,9 @@ const router = Router();
 //GET VIDEOGAMES
 
 const GET_AllVideogames = async (req, res) => {
-  const search = req.query.search;
+  const {search} = req.query;
   try {
-    const allVideogames = await searchAllVideogames(search);
+    const allVideogames = search ? await searchVideogame(search) : await searchAllVideogames();
     return res.status(200).send(allVideogames);
   } catch (error) {
     return res.status(401).send(error.message);
@@ -31,8 +31,10 @@ const GET_AllVideogames = async (req, res) => {
 
 const GET_VideogamesById = async (req, res) => {
   const id = req.params.idVideogame;
+  const source = isNaN(id)? "bd" : "api";
   try {
-    const videogame = searchVideogameById(id);
+    const videogame = await searchVideogameById(id, source);
+    console.log("FROM HANDLER:", videogame)
     res.status(200).send(videogame);
   } catch (error) {
     return res.status(401).send(error.message);
@@ -57,10 +59,12 @@ const POST_Videogames = async (req, res) => {
     req.body;
   console.log(name, image, platforms, description, released, rating, genre);
   try{
-   createvideogame( name, image, platforms, description, released, rating, genre )
-    res.status(200).send("video game created, thanks");
+   const newVideogame = await createvideogame( name, image, platforms, description, released, rating, genre )
+   console.log("NEW VIDEOGAME:", newVideogame)
+    res.status(200).send(newVideogame);
   } catch (error) {
     console.error("Error in create videogame", error.message);
+    res.status(401).send(error.message);
   }
 };
 

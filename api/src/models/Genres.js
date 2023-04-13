@@ -5,7 +5,11 @@ module.exports = (Sequelize) =>{
        name:{
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        created:{
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+          }
         
     },{
         timestamps: false

@@ -13,8 +13,8 @@ const searchGenres = async ()=>{
 }
 
 //FULLFILL TABLE GENRES
-const fillGenres = async (genres) =>{
-  await genres.forEach((genre)=> Genres.findOrCreate({
+const fillGenresDb = (genres) =>{
+  genres.forEach((genre)=> Genres.findOrCreate({
       where:{
         name: genre,
       }
@@ -23,4 +23,4 @@ const fillGenres = async (genres) =>{
 
 
 
-module.exports = {searchGenres, fillGenres}
+module.exports = {searchGenres, fillGenresDb}
