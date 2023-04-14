@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 const { Videogames, Genres } = require("../../db");
-const { cleanData } = require("../../utils/utils");
+const { cleanData, validate } = require("../../utils/utils");
 const { API_KEY } = process.env;
 
 //SEARCH ALL VIDEOGAMES
@@ -24,6 +24,7 @@ const searchAllVideogames = async () => {
   const videogamesDb = await Videogames.findAll({
     include: {
       model: Genres,
+      attributes: ["name"],
       through: {
         attributes: [],
       },
@@ -53,25 +54,30 @@ const searchVideogame = async (search) => {
   let filteredVideogames = [];
   if (search) {
     console.log("SEARCH VIDEOGAME WITH THIS WORD:", search);
-    
+
     const videogames = await axios(url).then((res) => res.data.results);
     filteredVideogames = cleanData(
       videogames.filter((e) =>
         e.name.toLowerCase().includes(search.toLowerCase())
       )
     );
-    if(filteredVideogames.length === 0) 
-    {
-      filteredVideogames = await Videogames.findAll(
-        {
-          where:{
-            name:search,
-          }
-        }) 
-    
-    console.log(filteredVideogames);
-  }
-  return filteredVideogames;
+    if (filteredVideogames.length === 0) {
+      filteredVideogames = await Videogames.findAll({
+        where: {
+          name: search,
+        },
+        include: {
+          model: Genres,
+          attributes: ["name"],
+          through: {
+            attributes: [],
+          },
+        },
+      });
+
+      console.log(filteredVideogames);
+    }
+    return filteredVideogames;
   }
 };
 //CREATE VIDEOGAMES
@@ -84,7 +90,7 @@ const createvideogame = async (
   rating,
   genre
 ) => {
-  const newVideogame = await Videogames.create({
+   const newVideogame = await Videogames.create({
     name,
     image,
     platforms,
@@ -103,7 +109,7 @@ const createvideogame = async (
       name: genre,
     },
   }).then((res) => newVideogame.addGenre(res));
-return newVideogame
+  return newVideogame;
 };
 
 //EXPORTS
